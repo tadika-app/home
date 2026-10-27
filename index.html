@@ -23,6 +23,19 @@ body{font-family:'Sarabun',sans-serif;background:var(--cream);color:#2b2b2b}
 #bTrack{transition:transform .6s ease}
 .swal2-popup{font-family:'Sarabun',sans-serif}
 .ic{cursor:pointer;border-radius:.5rem;padding:.4rem;text-align:center}.ic:hover,.ic.sel{background:var(--gold);color:#fff}
+
+body{background:#f7f2e4 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56'%3E%3Cpath d='M28 5l6 16 16 7-16 7-6 16-6-16-16-7 16-7z' fill='none' stroke='%23c9a227' stroke-opacity='.14'/%3E%3C/svg%3E")}
+header.sticky{background:linear-gradient(135deg,#041f17,#0f5132);backdrop-filter:blur(8px)}
+.card{border:1px solid #eadfb5;border-radius:1.25rem;box-shadow:0 2px 14px #0f513214}
+.btn{border-radius:.85rem;box-shadow:0 4px 12px #0f513230}
+.inp{border-radius:.8rem}
+.hero{background:radial-gradient(circle at 85% 20%,#c9a22733,transparent 45%),linear-gradient(135deg,#041f17,#0f5132 70%,#157347);box-shadow:0 14px 30px #0f513238}
+.mcard{display:flex;align-items:center;gap:1rem;padding:1rem 1.1rem;position:relative;overflow:hidden;text-align:left}
+.mcard::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:linear-gradient(var(--gold),var(--mar))}
+.mcard:hover{transform:translateY(-3px);box-shadow:0 16px 32px #0f513230;border-color:var(--gold)}
+.micon{width:64px;height:64px;flex-shrink:0;border-radius:1.1rem;background:linear-gradient(145deg,#0f5132,#041f17);color:#e8c65a;display:flex;align-items:center;justify-content:center;font-size:1.7rem;box-shadow:inset 0 0 0 2px #c9a22766,0 8px 16px #0f513240}
+.chip{font-size:.7rem;padding:.1rem .6rem;border-radius:999px;background:#fbf0c8;color:#7a5a00;font-weight:700}
+footer>div:last-child{background:linear-gradient(135deg,#041f17,#0f5132)!important}
 </style>
 </head>
 <body>
@@ -46,12 +59,17 @@ body{font-family:'Sarabun',sans-serif;background:var(--cream);color:#2b2b2b}
 
 <main class="max-w-5xl mx-auto px-4 py-5">
   <section id="home" class="sec on">
-    <div id="banner" class="relative overflow-hidden rounded-2xl border-4 border-[var(--gold)] shadow-lg mb-6 bg-[#e9e0c0]">
+    <div class="hero rounded-3xl p-6 mb-5 text-white">
+      <div class="text-[#e8c65a] text-sm mb-1">بسم الله الرحمن الرحيم</div>
+      <h1 class="text-2xl md:text-3xl font-extrabold">ระบบสารสนเทศอิสลามศึกษา</h1>
+      <p class="text-sm md:text-base text-white/80 mt-1">ใช้ง่ายทุกอุปกรณ์ สำหรับตาดีกา ปอเนาะ และโรงเรียนเอกชนสอนศาสนาอิสลาม</p>
+    </div>
+    <div id="banner" class="relative overflow-hidden rounded-3xl ring-4 ring-[#d4af37]/70 shadow-2xl mb-6 bg-[#e9e0c0]">
       <div id="bTrack" class="flex"></div>
       <div id="bDots" class="absolute bottom-2 left-0 right-0 flex justify-center gap-2"></div>
     </div>
     <h2 class="text-xl font-extrabold text-[var(--g)] mb-3"><i class="fa-solid fa-table-cells-large text-[var(--gold)]"></i> ระบบทั้งหมด</h2>
-    <div id="menus" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3"><div class="col-span-full text-center py-10 text-gray-500"><i class="fa-solid fa-spinner fa-spin"></i> กำลังโหลด...</div></div>
+    <div id="menus" class="grid grid-cols-1 md:grid-cols-2 gap-4"><div class="col-span-full text-center py-10 text-gray-500"><i class="fa-solid fa-spinner fa-spin"></i> กำลังโหลด...</div></div>
   </section>
 
   <section id="about" class="sec">
@@ -111,17 +129,8 @@ const PROMPTPAY = '0952200855';
 let D = { ads: [], banners: [], menus: [] }, TOKEN = sessionStorage.getItem('tk') || '', timer, bi = 0, tab = 'menu';
 const $ = id => document.getElementById(id);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const toUrl = l => /^https?:/i.test(l) ? l : BASE + l;
 const imgUrl = id => 'https://lh3.googleusercontent.com/d/' + id;
-const SELF = location.href.split('?')[0].split('#')[0];
-const toUrl = l => /^https?:/i.test(l) ? l : SELF + '?app=' + encodeURIComponent(l);
-const APP = new URLSearchParams(location.search).get('app');
-if (APP) { // เปิดระบบที่อัปโหลดไว้ใน Drive ทันที
-  document.body.innerHTML = '<div style="font-family:Sarabun,sans-serif;padding:4rem;text-align:center;color:#0f5132"><i class="fa-solid fa-spinner fa-spin"></i> กำลังเปิดระบบ...</div>';
-  fetch(GAS_URL + '?app=' + encodeURIComponent(APP)).then(r => r.json()).then(j => {
-    if (!j.ok) throw new Error(j.error);
-    document.open(); document.write(j.html); document.close();
-  }).catch(e => { document.body.innerHTML = '<div style="padding:3rem;text-align:center">เปิดระบบไม่สำเร็จ: ' + e.message + '</div>'; });
-}
 const toast = (t, i = 'success') => Swal.fire({ icon: i, title: t, timer: 1800, showConfirmButton: false });
 async function api(action, data = {}) {
   const r = await fetch(GAS_URL, { method: 'POST', body: JSON.stringify({ action, token: TOKEN, ...data }) });
@@ -184,16 +193,21 @@ function openBanner(i) {
 /* ===== เมนู ===== */
 function renderMenus() {
   $('menus').innerHTML = D.menus.length ? D.menus.map((m, i) => `
-    <div class="card mcard p-4 text-center cursor-pointer flex flex-col items-center" onclick="openMenu(${i})">
-      <div class="w-14 h-14 rounded-full bg-[var(--g)] text-[var(--gold)] flex items-center justify-center text-2xl mb-2"><i class="${esc(m.icon || 'fa-solid fa-star')}"></i></div>
-      <div class="font-extrabold text-[var(--g)] leading-tight">${esc(m.name)}</div>
-      <div class="text-xs text-gray-600 mt-1">${esc(m.detail)}</div>
-      <div class="text-[11px] text-gray-400 mt-auto pt-2">${m.version ? 'v' + esc(m.version) + ' · ' : ''}ใช้งาน ${Number(m.clicks || 0).toLocaleString()} ครั้ง</div>
+    <div class="card mcard cursor-pointer" onclick="openMenu(${i})">
+      <div class="micon"><i class="${esc(m.icon || 'fa-solid fa-star')}"></i></div>
+      <div class="flex-1 min-w-0">
+        <div class="font-extrabold text-lg text-[var(--g)] leading-snug">${esc(m.name)}</div>
+        <div class="text-sm text-gray-600 line-clamp-2">${esc(m.detail)}</div>
+        <div class="flex flex-wrap gap-1.5 mt-2">${m.version ? `<span class="chip">เวอร์ชัน ${esc(m.version)}</span>` : ''}<span class="chip"><i class="fa-solid fa-fire"></i> ใช้งาน ${Number(m.clicks || 0).toLocaleString()} ครั้ง</span></div>
+      </div>
+      <i class="fa-solid fa-chevron-right text-[var(--gold)]"></i>
     </div>`).join('') : '<div class="col-span-full text-center py-10 text-gray-500">ยังไม่มีระบบ</div>';
 }
 function openMenu(i) {
   const m = D.menus[i]; if (!m.link) return;
-  window.open(toUrl(m.link), '_blank');
+  let u = toUrl(m.link); // เติม ?v=เวอร์ชัน เพื่อให้ได้ไฟล์ล่าสุดเสมอ (กันแคช)
+  if (m.version) u += (u.includes('?') ? '&' : '?') + 'v=' + encodeURIComponent(m.version);
+  window.open(u, '_blank');
   m.clicks = (+m.clicks || 0) + 1; renderMenus();
   api('click', { row: m.row }).catch(() => {});
 }
@@ -248,19 +262,19 @@ function adminMenu() {
   $('adminBody').innerHTML = `
   <div class="card p-4 mb-4"><h3 class="font-extrabold mb-2" id="mTitle">เพิ่มระบบใหม่</h3>
     <div class="grid md:grid-cols-2 gap-2">
-      <input id="m_name" class="inp" placeholder="ชื่อเมนู *"><input id="m_ver" class="inp" placeholder="เวอร์ชัน เช่น 1.0">
+      <input id="m_name" class="inp md:col-span-2" placeholder="ชื่อเมนู *">
       <input id="m_detail" class="inp md:col-span-2" placeholder="รายละเอียด">
       <div class="md:col-span-2"><label class="text-sm font-bold">ไอคอน (Font Awesome ฟรี) <span id="icPrev" class="inline-flex w-9 h-9 bg-[var(--g)] text-[var(--gold)] rounded-full items-center justify-center ml-2"><i class="${selIcon}"></i></span></label>
         <input id="icQ" class="inp my-2" placeholder="ค้นหาไอคอน เช่น mosque, book" oninput="drawIcons()">
         <div id="icGrid" class="grid grid-cols-6 sm:grid-cols-10 gap-1 max-h-40 overflow-y-auto border-2 border-[#e0d3a0] rounded-lg p-1"></div></div>
-      <div><label class="text-sm font-bold">ไฟล์ระบบ (.html) <span class="font-normal text-gray-500">เลือกเมื่อเพิ่มใหม่/อัปเดตเวอร์ชัน</span></label><input id="m_file" type="file" accept=".html" class="inp" onchange="if(this.files[0])$('m_link').value=this.files[0].name"></div>
-      <div><label class="text-sm font-bold">ชื่อไฟล์ในระบบ หรือวางลิงก์ภายนอก</label><input id="m_link" class="inp" placeholder="TDKFood.html หรือ https://..."></div>
+      <div class="md:col-span-2"><label class="text-sm font-bold">ลิงก์ระบบ <span class="font-normal text-gray-500">ชื่อไฟล์บน GitHub เช่น TDKFood.html หรือวางลิงก์เต็ม https://...</span></label><input id="m_link" class="inp" placeholder="TDKFood.html"></div>
     </div>
     <div class="mt-3 flex gap-2"><button class="btn" onclick="saveMenu()"><i class="fa-solid fa-floppy-disk"></i> บันทึก</button><button class="btn gold hidden" id="mCancel" onclick="resetMenu()">ยกเลิกแก้ไข</button></div>
-    <p class="text-xs text-gray-500 mt-2">อัปโหลดไฟล์ .html แล้วระบบจะเปิดจาก Drive ให้ทันที ไม่ต้องนำขึ้น GitHub หรือจะวางลิงก์ภายนอก (ขึ้นต้น https://) แทนก็ได้ การอัปเดตเวอร์ชันให้เลือกไฟล์ชื่อเดิมซ้ำ</p></div>
+    <p class="text-xs text-gray-500 mt-2">เวอร์ชันอัปเดตอัตโนมัติทุกครั้งที่บันทึกการแก้ไข (หรือกดปุ่ม <i class="fa-solid fa-arrow-up-1-9"></i> หลังอัปเดตไฟล์บน GitHub) และระบบจะเปิดลิงก์พร้อม ?v=เวอร์ชัน เพื่อให้ผู้ใช้ได้ไฟล์ล่าสุดเสมอ</p></div>
   <div class="space-y-2">${D.menus.map((m, i) => `<div class="card p-3 flex items-center gap-3">
     <div class="w-10 h-10 rounded-full bg-[var(--g)] text-[var(--gold)] flex items-center justify-center"><i class="${esc(m.icon)}"></i></div>
     <div class="flex-1 min-w-0"><div class="font-bold truncate">${esc(m.name)} <span class="text-xs text-gray-500">${m.version ? 'v' + esc(m.version) : ''}</span></div><div class="text-xs text-gray-500 truncate">${esc(m.link)} · ${m.clicks} คลิก</div></div>
+    <button class="btn text-sm" title="อัปเดตเวอร์ชัน" onclick="bumpMenu(${i})"><i class="fa-solid fa-arrow-up-1-9"></i></button>
     <button class="btn gold text-sm" onclick="editMenu(${i})"><i class="fa-solid fa-pen"></i></button>
     <button class="btn red text-sm" onclick="delMenu(${i})"><i class="fa-solid fa-trash"></i></button></div>`).join('')}</div>`;
   drawIcons();
@@ -271,25 +285,27 @@ function drawIcons() {
 }
 function editMenu(i) {
   const m = D.menus[i]; editRow = m.row; selIcon = m.icon || selIcon;
-  $('m_name').value = m.name; $('m_detail').value = m.detail; $('m_ver').value = m.version || ''; $('m_link').value = m.link;
+  $('m_name').value = m.name; $('m_detail').value = m.detail; $('m_link').value = m.link;
   $('icPrev').innerHTML = `<i class="${selIcon}"></i>`; drawIcons();
-  $('mTitle').textContent = 'แก้ไข/อัปเดตเวอร์ชัน: ' + m.name; $('mCancel').classList.remove('hidden'); scrollTo({ top: 0, behavior: 'smooth' });
+  $('mTitle').textContent = 'แก้ไขระบบ: ' + m.name; $('mCancel').classList.remove('hidden'); scrollTo({ top: 0, behavior: 'smooth' });
 }
 function resetMenu() { editRow = 0; selIcon = 'fa-solid fa-star'; adminMenu(); }
 async function saveMenu() {
-  const name = $('m_name').value.trim(); if (!name) return toast('กรุณากรอกชื่อเมนู', 'warning');
-  const f = $('m_file').files[0], d = { row: editRow, name, detail: $('m_detail').value, icon: selIcon, version: $('m_ver').value, link: $('m_link').value };
+  const name = $('m_name').value.trim(), link = $('m_link').value.trim();
+  if (!name || !link) return toast('กรุณากรอกชื่อเมนูและลิงก์', 'warning');
+  const d = { row: editRow, name, detail: $('m_detail').value, icon: selIcon, link };
   Swal.fire({ title: 'กำลังบันทึก...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
-  try {
-    if (f) { d.filename = f.name; d.content = await f.text(); }
-    await api('saveMenu', d); editRow = 0; selIcon = 'fa-solid fa-star'; await load(); renderAdmin(); toast('บันทึกแล้ว');
-  } catch (e) { authErr(e); }
+  try { await api('saveMenu', d); editRow = 0; selIcon = 'fa-solid fa-star'; await load(); renderAdmin(); toast('บันทึกแล้ว'); }
+  catch (e) { authErr(e); }
+}
+async function bumpMenu(i) {
+  try { await api('bumpMenu', { row: D.menus[i].row }); await load(); renderAdmin(); toast('อัปเดตเวอร์ชันแล้ว'); } catch (e) { authErr(e); }
 }
 async function delMenu(i) {
   const m = D.menus[i];
-  const r = await Swal.fire({ title: 'ลบระบบ "' + m.name + '" ?', text: 'จะลบไฟล์ .html ในโฟลเดอร์ Drive ด้วย', icon: 'warning', showCancelButton: true, confirmButtonColor: '#7a1f2b', confirmButtonText: 'ลบ', cancelButtonText: 'ยกเลิก' });
+  const r = await Swal.fire({ title: 'ลบระบบ "' + m.name + '" ?', icon: 'warning', showCancelButton: true, confirmButtonColor: '#7a1f2b', confirmButtonText: 'ลบ', cancelButtonText: 'ยกเลิก' });
   if (!r.isConfirmed) return;
-  try { await api('deleteMenu', { row: m.row, deleteFile: true }); await load(); renderAdmin(); toast('ลบแล้ว'); } catch (e) { authErr(e); }
+  try { await api('deleteMenu', { row: m.row }); await load(); renderAdmin(); toast('ลบแล้ว'); } catch (e) { authErr(e); }
 }
 
 function adminImg(kind) {
@@ -328,7 +344,7 @@ async function delImg(kind, row) {
   try { await api('deleteImage', { kind, row }); await load(); renderAdmin(); toast('ลบแล้ว'); } catch (e) { authErr(e); }
 }
 
-if (!APP) load().then(showAds);
+load().then(showAds);
 </script>
 </body>
 </html>
