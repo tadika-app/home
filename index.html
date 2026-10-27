@@ -1,1 +1,323 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ระบบสารสนเทศอิสลามศึกษา</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+:root{--g:#0f5132;--g2:#157347;--gold:#c9a227;--mar:#7a1f2b;--cream:#fbf5e6}
+body{font-family:'Sarabun',sans-serif;background:var(--cream);color:#2b2b2b}
+.songket{height:10px;background:repeating-linear-gradient(135deg,var(--gold) 0 7px,var(--mar) 7px 14px,var(--g) 14px 21px)}
+.card{background:#fff;border:2px solid #e7d9a8;border-radius:1rem;transition:.2s}
+.mcard:hover{border-color:var(--gold);transform:translateY(-3px);box-shadow:0 8px 20px #0f513222}
+.btn{background:var(--g);color:#fff;border-radius:.6rem;padding:.55rem 1.1rem;font-weight:700}
+.btn:hover{background:var(--g2)}.btn.gold{background:var(--gold);color:#2b1d00}.btn.red{background:var(--mar)}
+.inp{width:100%;border:2px solid #e0d3a0;border-radius:.6rem;padding:.5rem .75rem;background:#fffdf5}
+.inp:focus{outline:none;border-color:var(--g)}
+.sec{display:none}.sec.on{display:block}
+#bTrack{transition:transform .6s ease}
+.swal2-popup{font-family:'Sarabun',sans-serif}
+.ic{cursor:pointer;border-radius:.5rem;padding:.4rem;text-align:center}.ic:hover,.ic.sel{background:var(--gold);color:#fff}
+</style>
+</head>
+<body>
 
+<header class="sticky top-0 z-40 bg-[var(--g)] text-white shadow">
+  <div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
+    <a href="#" onclick="nav('home');return false" class="flex items-center gap-3">
+      <i class="fa-solid fa-mosque text-2xl text-[var(--gold)]"></i>
+      <div class="leading-tight"><div class="font-extrabold text-lg">ระบบสารสนเทศอิสลามศึกษา</div><div class="text-xs text-[#f3e3a1]">السلام عليكم ورحمة الله</div></div>
+    </a>
+    <button onclick="$('dd').classList.toggle('hidden')" class="text-2xl w-10 h-10" aria-label="เมนู"><i class="fa-solid fa-bars"></i></button>
+  </div>
+  <div class="songket"></div>
+  <nav id="dd" class="hidden absolute right-3 top-full mt-1 w-56 bg-white text-[#2b2b2b] rounded-xl shadow-xl border-2 border-[#e7d9a8] overflow-hidden">
+    <a class="block px-4 py-3 hover:bg-[#fbf0c8]" href="#" onclick="nav('about');return false"><i class="fa-solid fa-circle-info w-6 text-[var(--g)]"></i>เกี่ยวกับเรา</a>
+    <a class="block px-4 py-3 hover:bg-[#fbf0c8]" href="#" onclick="nav('support');return false"><i class="fa-solid fa-hand-holding-heart w-6 text-[var(--mar)]"></i>สนับสนุนเรา</a>
+    <a class="block px-4 py-3 hover:bg-[#fbf0c8]" href="#" onclick="nav('admin');return false"><i class="fa-solid fa-user-shield w-6 text-[var(--gold)]"></i>แอดมิน</a>
+  </nav>
+</header>
+
+<main class="max-w-5xl mx-auto px-4 py-5">
+  <section id="home" class="sec on">
+    <div id="banner" class="relative overflow-hidden rounded-2xl border-4 border-[var(--gold)] shadow-lg mb-6 bg-[#e9e0c0]">
+      <div id="bTrack" class="flex"></div>
+      <div id="bDots" class="absolute bottom-2 left-0 right-0 flex justify-center gap-2"></div>
+    </div>
+    <h2 class="text-xl font-extrabold text-[var(--g)] mb-3"><i class="fa-solid fa-table-cells-large text-[var(--gold)]"></i> ระบบทั้งหมด</h2>
+    <div id="menus" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3"><div class="col-span-full text-center py-10 text-gray-500"><i class="fa-solid fa-spinner fa-spin"></i> กำลังโหลด...</div></div>
+  </section>
+
+  <section id="about" class="sec">
+    <div class="card p-5 md:p-7">
+      <h2 class="text-2xl font-extrabold text-[var(--g)] mb-3"><i class="fa-solid fa-circle-info text-[var(--gold)]"></i> เกี่ยวกับเรา</h2>
+      <div class="space-y-3 leading-relaxed">
+        <p>แอพถูกสร้างขึ้นเพื่อ<b>ลดภาระงานซ้ำซ้อน เพิ่มเวลาให้ครูได้อยู่กับนักเรียน</b> พัฒนานักเรียนของตนเองให้มีศักยภาพสูงสุด</p>
+        <p>ระบบถูกสร้างให้ใช้งานได้ทุกอุปกรณ์ เพราะเราทราบว่าอะไรคือข้อจำกัดของบุคลากร ต้องใช้ง่าย ทุกคนใช้ได้ คอมพิวเตอร์ไม่ได้มีในทุกที่ ใช้มือถือกับอินเทอร์เน็ตที่มีอยู่ ทำได้ทุกที่ทุกเวลา</p>
+        <p>เราอยากให้<b>ตาดีกา ปอเนาะ และโรงเรียนเอกชนสอนศาสนาอิสลาม</b>มีระบบใช้ในราคาที่เช่าซื้อได้จริง</p>
+        <div class="rounded-xl bg-[#fbf0c8] border-2 border-[var(--gold)] p-4">
+          <div class="font-extrabold text-[var(--mar)] mb-1"><i class="fa-solid fa-id-card"></i> ระบบบัตรนักเรียนตาดีกา (ภาษายาวี/ไทย)</div>
+          เป็นสมาร์ทการ์ดเติมเงิน/จ่ายค่าขนมในสถานศึกษาได้ ป้องกันเงินหล่นหาย และแตะบัตรเช็คการละหมาดได้
+        </div>
+      </div>
+      <h3 class="text-lg font-extrabold text-[var(--g)] mt-6 mb-2">สนใจให้เราแนะนำระบบ</h3>
+      <div class="grid md:grid-cols-2 gap-3">
+        <input id="f_name" class="inp" placeholder="ชื่อผู้ติดต่อ *">
+        <input id="f_phone" class="inp" type="tel" placeholder="เบอร์โทร *">
+        <input id="f_school" class="inp" placeholder="ชื่อสถานศึกษา">
+        <input id="f_email" class="inp" type="email" placeholder="อีเมล">
+        <textarea id="f_address" class="inp md:col-span-2" rows="2" placeholder="ที่อยู่"></textarea>
+        <textarea id="f_note" class="inp md:col-span-2" rows="2" placeholder="ระบบที่สนใจ / ปัญหาที่พบ (ถ้ามี)"></textarea>
+      </div>
+      <button id="sendBtn" onclick="sendReq()" class="btn mt-3"><i class="fa-solid fa-paper-plane"></i> ส่งคำขอ</button>
+    </div>
+  </section>
+
+  <section id="support" class="sec">
+    <div class="card p-5 md:p-7 text-center max-w-md mx-auto">
+      <h2 class="text-2xl font-extrabold text-[var(--g)] mb-2"><i class="fa-solid fa-hand-holding-heart text-[var(--mar)]"></i> สนับสนุนเรา</h2>
+      <p class="mb-4">สนับสนุนค่าใช้จ่ายในการสร้างซอฟต์แวร์แบบ<b>ญารียะห์</b> ผ่านพร้อมเพย์ ขอให้อัลลอฮ์ตอบแทนผู้ร่วมบริจาคทุกท่าน</p>
+      <div id="qr" class="inline-block p-3 bg-white border-4 border-[var(--gold)] rounded-xl"></div>
+      <div class="mt-3 text-sm text-gray-600">พร้อมเพย์</div>
+      <div class="text-2xl font-extrabold tracking-wider text-[var(--g)]">095-220-0855</div>
+      <button onclick="copyPP()" class="btn gold mt-3"><i class="fa-regular fa-copy"></i> คัดลอกเลขพร้อมเพย์</button>
+    </div>
+  </section>
+
+  <section id="admin" class="sec"><div id="adminBox"></div></section>
+</main>
+
+<footer class="mt-8">
+  <div class="songket"></div>
+  <div class="bg-[var(--g)] text-white text-center text-sm py-5 px-4">
+    พบปัญหาการใช้งานติดต่อผ่านทางอีเมล
+    <a class="underline text-[#f3e3a1] font-bold" href="mailto:tadika5vlayah@gmail.com">tadika5vlayah@gmail.com</a>
+  </div>
+</footer>
+
+<script>
+/* ===== ตั้งค่า ===== */
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbzgEyb3Ezi9DgnRSbF1C7ZoPAwWr-7uI1l-KqCXpDUvIyeop2KmwhCVKl6PLYxcBwkJJQ/exec';
+const BASE = 'https://tadika-app.github.io/home/';
+const PROMPTPAY = '0952200855';
+
+let D = { ads: [], banners: [], menus: [] }, TOKEN = sessionStorage.getItem('tk') || '', timer, bi = 0, tab = 'menu';
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const imgUrl = id => 'https://lh3.googleusercontent.com/d/' + id;
+const toUrl = l => /^https?:/i.test(l) ? l : BASE + l;
+const toast = (t, i = 'success') => Swal.fire({ icon: i, title: t, timer: 1800, showConfirmButton: false });
+async function api(action, data = {}) {
+  const r = await fetch(GAS_URL, { method: 'POST', body: JSON.stringify({ action, token: TOKEN, ...data }) });
+  const j = await r.json();
+  if (!j.ok) throw new Error(j.error);
+  return j;
+}
+async function load() {
+  try { D = await (await fetch(GAS_URL)).json(); } catch (e) { $('menus').innerHTML = '<div class="col-span-full text-center text-red-700">โหลดข้อมูลไม่สำเร็จ กรุณาตรวจสอบ GAS_URL</div>'; return; }
+  renderBanner(); renderMenus();
+}
+
+/* ===== นำทาง ===== */
+function nav(v) {
+  document.querySelectorAll('.sec').forEach(s => s.classList.toggle('on', s.id === v));
+  $('dd').classList.add('hidden'); scrollTo(0, 0);
+  if (v === 'support') drawQR();
+  if (v === 'admin') renderAdmin();
+}
+
+/* ===== โฆษณา ===== */
+function showAds() {
+  if (!D.ads.length || Date.now() < (+localStorage.getItem('adsHide') || 0)) return;
+  Swal.fire({
+    width: 460, padding: '1rem', showConfirmButton: false, showCloseButton: true,
+    html: `<div class="flex overflow-x-auto snap-x snap-mandatory gap-2">${D.ads.map((a, i) =>
+      `<img src="${imgUrl(a.id)}" onclick="openAd(${i})" class="snap-center w-full shrink-0 aspect-square object-cover rounded-xl ${a.link ? 'cursor-pointer' : ''}">`).join('')}</div>
+      ${D.ads.length > 1 ? '<div class="text-xs text-gray-500 mt-1">เลื่อนดูโฆษณาเพิ่มเติม ←→</div>' : ''}
+      <button class="btn red mt-3 text-sm" onclick="localStorage.setItem('adsHide',Date.now()+6048e5);Swal.close()"><i class="fa-regular fa-eye-slash"></i> ไม่แสดงอีก 7 วัน</button>`
+  });
+}
+function openAd(i) { if (D.ads[i].link) window.open(D.ads[i].link, '_blank'); }
+
+/* ===== แบนเนอร์ ===== */
+function renderBanner() {
+  const b = D.banners; clearInterval(timer);
+  $('banner').classList.toggle('hidden', !b.length);
+  $('bTrack').innerHTML = b.map((x, i) => `<div class="w-full shrink-0 aspect-video cursor-pointer" onclick="openBanner(${i})"><img src="${imgUrl(x.id)}" class="w-full h-full object-cover"></div>`).join('');
+  $('bDots').innerHTML = b.map((_, i) => `<span class="w-2.5 h-2.5 rounded-full bg-white/60 border border-[var(--g)]"></span>`).join('');
+  bi = 0; goB(0);
+  if (b.length > 1) timer = setInterval(() => goB(bi + 1), 4000);
+}
+function goB(n) {
+  const len = D.banners.length; if (!len) return;
+  bi = (n + len) % len;
+  $('bTrack').style.transform = `translateX(-${bi * 100}%)`;
+  [...$('bDots').children].forEach((d, i) => d.style.background = i === bi ? '#c9a227' : 'rgba(255,255,255,.6)');
+}
+function openBanner(i) {
+  const b = D.banners[i];
+  Swal.fire({
+    grow: 'fullscreen', showConfirmButton: !!b.link, confirmButtonText: '<i class="fa-solid fa-up-right-from-square"></i> เปิดลิงก์', confirmButtonColor: '#0f5132',
+    showCloseButton: true, showCancelButton: true, cancelButtonText: 'ปิด',
+    html: `<div class="max-w-3xl mx-auto text-left"><img src="${imgUrl(b.id)}" class="w-full rounded-xl aspect-video object-cover border-4 border-[var(--gold)]">
+      <h2 class="text-2xl font-extrabold text-[var(--g)] mt-4">${esc(b.title)}</h2>
+      <div class="mt-2 leading-relaxed whitespace-pre-line">${esc(b.detail)}</div></div>`
+  }).then(r => { if (r.isConfirmed && b.link) window.open(b.link, '_blank'); });
+}
+
+/* ===== เมนู ===== */
+function renderMenus() {
+  $('menus').innerHTML = D.menus.length ? D.menus.map((m, i) => `
+    <div class="card mcard p-4 text-center cursor-pointer flex flex-col items-center" onclick="openMenu(${i})">
+      <div class="w-14 h-14 rounded-full bg-[var(--g)] text-[var(--gold)] flex items-center justify-center text-2xl mb-2"><i class="${esc(m.icon || 'fa-solid fa-star')}"></i></div>
+      <div class="font-extrabold text-[var(--g)] leading-tight">${esc(m.name)}</div>
+      <div class="text-xs text-gray-600 mt-1">${esc(m.detail)}</div>
+      <div class="text-[11px] text-gray-400 mt-auto pt-2">${m.version ? 'v' + esc(m.version) + ' · ' : ''}ใช้งาน ${Number(m.clicks || 0).toLocaleString()} ครั้ง</div>
+    </div>`).join('') : '<div class="col-span-full text-center py-10 text-gray-500">ยังไม่มีระบบ</div>';
+}
+function openMenu(i) {
+  const m = D.menus[i]; if (!m.link) return;
+  window.open(toUrl(m.link), '_blank');
+  m.clicks = (+m.clicks || 0) + 1; renderMenus();
+  api('click', { row: m.row }).catch(() => {});
+}
+
+/* ===== ฟอร์มคำขอ ===== */
+async function sendReq() {
+  const g = k => $('f_' + k).value.trim(), d = { name: g('name'), phone: g('phone'), school: g('school'), address: g('address'), email: g('email'), note: g('note') };
+  if (!d.name || !d.phone) return toast('กรุณากรอกชื่อและเบอร์โทร', 'warning');
+  $('sendBtn').disabled = true;
+  try { await api('request', d); Swal.fire('ส่งคำขอแล้ว', 'เราจะติดต่อกลับโดยเร็วที่สุด', 'success'); ['name', 'phone', 'school', 'address', 'email', 'note'].forEach(k => $('f_' + k).value = ''); }
+  catch (e) { Swal.fire('ส่งไม่สำเร็จ', e.message, 'error'); }
+  $('sendBtn').disabled = false;
+}
+
+/* ===== PromptPay QR ===== */
+function crc16(s) { let c = 0xFFFF; for (let i = 0; i < s.length; i++) { c ^= s.charCodeAt(i) << 8; for (let j = 0; j < 8; j++) c = c & 0x8000 ? (c << 1) ^ 0x1021 : c << 1; c &= 0xFFFF; } return c.toString(16).toUpperCase().padStart(4, '0'); }
+function ppPayload(phone) {
+  const t = '0066' + phone.replace(/^0/, '');
+  const p = '00020101021129370016A000000677010111011' + '3' + t + '5802TH5303764' + '6304';
+  return p + crc16(p);
+}
+let qrDone = false;
+function drawQR() { if (qrDone) return; qrDone = true; new QRCode($('qr'), { text: ppPayload(PROMPTPAY), width: 220, height: 220, correctLevel: QRCode.CorrectLevel.M }); }
+function copyPP() { navigator.clipboard.writeText(PROMPTPAY).then(() => toast('คัดลอกแล้ว: ' + PROMPTPAY)).catch(() => Swal.fire('เลขพร้อมเพย์', PROMPTPAY)); }
+
+/* ===== แอดมิน ===== */
+const ICONS = 'book-quran mosque kaaba star-and-crescent user-graduate school chalkboard-user money-bill wallet credit-card id-card clipboard-check calendar-check calendar-days utensils bowl-food bus book book-open pen file-lines chart-line chart-pie users user people-group bell envelope phone house gear qrcode camera image video music map-location-dot clock hands-praying person-praying scroll award trophy medal graduation-cap laptop mobile-screen database shield-halved heart star lightbulb list-check receipt cash-register store cart-shopping basket-shopping coins hand-holding-dollar child baby person-chalkboard folder-open print magnifying-glass circle-info bullhorn newspaper pen-to-square address-book comments language globe handshake building-columns tower-broadcast'.split(' ');
+let editRow = 0, selIcon = 'fa-solid fa-star';
+
+function renderAdmin() {
+  if (!TOKEN) {
+    $('adminBox').innerHTML = `<div class="card p-6 max-w-sm mx-auto"><h2 class="text-xl font-extrabold text-[var(--g)] mb-3"><i class="fa-solid fa-lock text-[var(--gold)]"></i> เข้าสู่ระบบแอดมิน</h2>
+      <input id="u" class="inp mb-2" placeholder="Username"><input id="p" type="password" class="inp mb-3" placeholder="Password" onkeydown="if(event.key==='Enter')doLogin()">
+      <button class="btn w-full" onclick="doLogin()">เข้าสู่ระบบ</button></div>`;
+    return;
+  }
+  const tabs = [['menu', 'ระบบ/เมนู', 'table-cells-large'], ['ads', 'โฆษณา', 'rectangle-ad'], ['banner', 'แบนเนอร์', 'panorama']];
+  $('adminBox').innerHTML = `<div class="flex items-center justify-between mb-3"><h2 class="text-xl font-extrabold text-[var(--g)]"><i class="fa-solid fa-user-shield text-[var(--gold)]"></i> จัดการระบบ</h2>
+    <button class="btn red text-sm" onclick="logout()">ออกจากระบบ</button></div>
+    <div class="flex gap-2 mb-4">${tabs.map(t => `<button onclick="tab='${t[0]}';renderAdmin()" class="btn ${tab === t[0] ? '' : 'gold'} text-sm"><i class="fa-solid fa-${t[2]}"></i> ${t[1]}</button>`).join('')}</div>
+    <div id="adminBody"></div>`;
+  tab === 'menu' ? adminMenu() : adminImg(tab);
+}
+async function doLogin() {
+  try { const r = await api('login', { username: $('u').value, password: $('p').value }); TOKEN = r.token; sessionStorage.setItem('tk', TOKEN); renderAdmin(); }
+  catch (e) { Swal.fire('เข้าสู่ระบบไม่สำเร็จ', e.message, 'error'); }
+}
+function logout() { TOKEN = ''; sessionStorage.removeItem('tk'); renderAdmin(); }
+function authErr(e) { if (/เข้าสู่ระบบใหม่/.test(e.message)) logout(); Swal.fire('ผิดพลาด', e.message, 'error'); }
+
+function adminMenu() {
+  $('adminBody').innerHTML = `
+  <div class="card p-4 mb-4"><h3 class="font-extrabold mb-2" id="mTitle">เพิ่มระบบใหม่</h3>
+    <div class="grid md:grid-cols-2 gap-2">
+      <input id="m_name" class="inp" placeholder="ชื่อเมนู *"><input id="m_ver" class="inp" placeholder="เวอร์ชัน เช่น 1.0">
+      <input id="m_detail" class="inp md:col-span-2" placeholder="รายละเอียด">
+      <div class="md:col-span-2"><label class="text-sm font-bold">ไอคอน (Font Awesome ฟรี) <span id="icPrev" class="inline-flex w-9 h-9 bg-[var(--g)] text-[var(--gold)] rounded-full items-center justify-center ml-2"><i class="${selIcon}"></i></span></label>
+        <input id="icQ" class="inp my-2" placeholder="ค้นหาไอคอน เช่น mosque, book" oninput="drawIcons()">
+        <div id="icGrid" class="grid grid-cols-6 sm:grid-cols-10 gap-1 max-h-40 overflow-y-auto border-2 border-[#e0d3a0] rounded-lg p-1"></div></div>
+      <div><label class="text-sm font-bold">ไฟล์ระบบ (.html) <span class="font-normal text-gray-500">เลือกเมื่อเพิ่มใหม่/อัปเดตเวอร์ชัน</span></label><input id="m_file" type="file" accept=".html" class="inp" onchange="if(this.files[0])$('m_link').value=this.files[0].name"></div>
+      <div><label class="text-sm font-bold">ชื่อไฟล์/ลิงก์ปลายทาง</label><input id="m_link" class="inp" placeholder="เช่น TDKFood.html"></div>
+    </div>
+    <div class="mt-3 flex gap-2"><button class="btn" onclick="saveMenu()"><i class="fa-solid fa-floppy-disk"></i> บันทึก</button><button class="btn gold hidden" id="mCancel" onclick="resetMenu()">ยกเลิกแก้ไข</button></div>
+    <p class="text-xs text-gray-500 mt-2">ไฟล์ .html จะถูกเก็บในโฟลเดอร์ Drive ของระบบ และลิงก์จะเป็น ${BASE}ชื่อไฟล์ (อย่าลืมนำไฟล์ขึ้น GitHub Pages ด้วย)</p></div>
+  <div class="space-y-2">${D.menus.map((m, i) => `<div class="card p-3 flex items-center gap-3">
+    <div class="w-10 h-10 rounded-full bg-[var(--g)] text-[var(--gold)] flex items-center justify-center"><i class="${esc(m.icon)}"></i></div>
+    <div class="flex-1 min-w-0"><div class="font-bold truncate">${esc(m.name)} <span class="text-xs text-gray-500">${m.version ? 'v' + esc(m.version) : ''}</span></div><div class="text-xs text-gray-500 truncate">${esc(m.link)} · ${m.clicks} คลิก</div></div>
+    <button class="btn gold text-sm" onclick="editMenu(${i})"><i class="fa-solid fa-pen"></i></button>
+    <button class="btn red text-sm" onclick="delMenu(${i})"><i class="fa-solid fa-trash"></i></button></div>`).join('')}</div>`;
+  drawIcons();
+}
+function drawIcons() {
+  const q = ($('icQ')?.value || '').toLowerCase();
+  $('icGrid').innerHTML = ICONS.filter(n => n.includes(q)).map(n => { const c = 'fa-solid fa-' + n; return `<div class="ic ${c === selIcon ? 'sel' : ''}" title="${n}" onclick="selIcon='${c}';$('icPrev').innerHTML='<i class=\\'${c}\\'></i>';drawIcons()"><i class="${c}"></i></div>`; }).join('');
+}
+function editMenu(i) {
+  const m = D.menus[i]; editRow = m.row; selIcon = m.icon || selIcon;
+  $('m_name').value = m.name; $('m_detail').value = m.detail; $('m_ver').value = m.version || ''; $('m_link').value = m.link;
+  $('icPrev').innerHTML = `<i class="${selIcon}"></i>`; drawIcons();
+  $('mTitle').textContent = 'แก้ไข/อัปเดตเวอร์ชัน: ' + m.name; $('mCancel').classList.remove('hidden'); scrollTo({ top: 0, behavior: 'smooth' });
+}
+function resetMenu() { editRow = 0; selIcon = 'fa-solid fa-star'; adminMenu(); }
+async function saveMenu() {
+  const name = $('m_name').value.trim(); if (!name) return toast('กรุณากรอกชื่อเมนู', 'warning');
+  const f = $('m_file').files[0], d = { row: editRow, name, detail: $('m_detail').value, icon: selIcon, version: $('m_ver').value, link: $('m_link').value };
+  Swal.fire({ title: 'กำลังบันทึก...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+  try {
+    if (f) { d.filename = f.name; d.content = await f.text(); }
+    await api('saveMenu', d); editRow = 0; selIcon = 'fa-solid fa-star'; await load(); renderAdmin(); toast('บันทึกแล้ว');
+  } catch (e) { authErr(e); }
+}
+async function delMenu(i) {
+  const m = D.menus[i];
+  const r = await Swal.fire({ title: 'ลบระบบ "' + m.name + '" ?', text: 'จะลบไฟล์ .html ในโฟลเดอร์ Drive ด้วย', icon: 'warning', showCancelButton: true, confirmButtonColor: '#7a1f2b', confirmButtonText: 'ลบ', cancelButtonText: 'ยกเลิก' });
+  if (!r.isConfirmed) return;
+  try { await api('deleteMenu', { row: m.row, deleteFile: true }); await load(); renderAdmin(); toast('ลบแล้ว'); } catch (e) { authErr(e); }
+}
+
+function adminImg(kind) {
+  const isAd = kind === 'ads', list = isAd ? D.ads : D.banners;
+  $('adminBody').innerHTML = `
+  <div class="card p-4 mb-4"><h3 class="font-extrabold mb-2">เพิ่ม${isAd ? 'โฆษณา (รูป 1:1)' : 'แบนเนอร์ (รูป 16:9)'}</h3>
+    <div class="grid md:grid-cols-2 gap-2">
+      <input id="i_file" type="file" accept="image/*" class="inp md:col-span-2">
+      ${isAd ? '' : '<input id="i_title" class="inp" placeholder="หัวข้อ"><input id="i_link" class="inp" placeholder="ลิงก์ (ถ้ามี)"><textarea id="i_detail" class="inp md:col-span-2" rows="3" placeholder="รายละเอียด/ข่าวสาร"></textarea>'}
+      ${isAd ? '<input id="i_link" class="inp md:col-span-2" placeholder="ลิงก์ที่จะเปิดเมื่อคลิกรูป">' : ''}
+    </div><button class="btn mt-3" onclick="addImg('${kind}')"><i class="fa-solid fa-upload"></i> อัปโหลด</button></div>
+  <div class="grid grid-cols-2 md:grid-cols-3 gap-3">${list.map(x => `<div class="card p-2"><img src="${imgUrl(x.id)}" class="w-full ${isAd ? 'aspect-square' : 'aspect-video'} object-cover rounded-lg">
+    <div class="text-xs mt-1 truncate">${esc(x.title || x.link || '-')}</div><button class="btn red text-xs mt-1 w-full" onclick="delImg('${kind}',${x.row})"><i class="fa-solid fa-trash"></i> ลบ</button></div>`).join('') || '<div class="col-span-full text-gray-500">ยังไม่มีรายการ</div>'}</div>`;
+}
+function shrink(file, max = 1280) {
+  return new Promise(res => {
+    const im = new Image(); im.onload = () => {
+      const k = Math.min(1, max / Math.max(im.width, im.height)), c = document.createElement('canvas');
+      c.width = im.width * k; c.height = im.height * k; c.getContext('2d').drawImage(im, 0, 0, c.width, c.height);
+      res(c.toDataURL('image/jpeg', .85).split(',')[1]);
+    }; im.src = URL.createObjectURL(file);
+  });
+}
+async function addImg(kind) {
+  const f = $('i_file').files[0]; if (!f) return toast('กรุณาเลือกรูปภาพ', 'warning');
+  const v = id => $(id)?.value || '';
+  Swal.fire({ title: 'กำลังอัปโหลด...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+  try {
+    await api('addImage', { kind, base64: await shrink(f), mime: 'image/jpeg', name: kind + '_' + Date.now() + '.jpg', title: v('i_title'), detail: v('i_detail'), link: v('i_link') });
+    await load(); renderAdmin(); toast('อัปโหลดแล้ว');
+  } catch (e) { authErr(e); }
+}
+async function delImg(kind, row) {
+  const r = await Swal.fire({ title: 'ลบรูปนี้?', icon: 'warning', showCancelButton: true, confirmButtonColor: '#7a1f2b', confirmButtonText: 'ลบ', cancelButtonText: 'ยกเลิก' });
+  if (!r.isConfirmed) return;
+  try { await api('deleteImage', { kind, row }); await load(); renderAdmin(); toast('ลบแล้ว'); } catch (e) { authErr(e); }
+}
+
+load().then(showAds);
+</script>
+</body>
+</html>
