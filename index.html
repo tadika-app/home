@@ -37,6 +37,7 @@ body{font-family:'Sarabun',sans-serif;background:var(--cream);color:#2b2b2b}
   </div>
   <div class="songket"></div>
   <nav id="dd" class="hidden absolute right-3 top-full mt-1 w-56 bg-white text-[#2b2b2b] rounded-xl shadow-xl border-2 border-[#e7d9a8] overflow-hidden">
+    <a class="block px-4 py-3 hover:bg-[#fbf0c8]" href="#" onclick="nav('home');return false"><i class="fa-solid fa-house w-6 text-[var(--g)]"></i>หน้าหลัก</a>
     <a class="block px-4 py-3 hover:bg-[#fbf0c8]" href="#" onclick="nav('about');return false"><i class="fa-solid fa-circle-info w-6 text-[var(--g)]"></i>เกี่ยวกับเรา</a>
     <a class="block px-4 py-3 hover:bg-[#fbf0c8]" href="#" onclick="nav('support');return false"><i class="fa-solid fa-hand-holding-heart w-6 text-[var(--mar)]"></i>สนับสนุนเรา</a>
     <a class="block px-4 py-3 hover:bg-[#fbf0c8]" href="#" onclick="nav('admin');return false"><i class="fa-solid fa-user-shield w-6 text-[var(--gold)]"></i>แอดมิน</a>
@@ -95,6 +96,7 @@ body{font-family:'Sarabun',sans-serif;background:var(--cream);color:#2b2b2b}
 <footer class="mt-8">
   <div class="songket"></div>
   <div class="bg-[var(--g)] text-white text-center text-sm py-5 px-4">
+    <button onclick="nav('support')" class="btn gold mb-3"><i class="fa-solid fa-hand-holding-heart"></i> สนับสนุนเรา</button><br>
     พบปัญหาการใช้งานติดต่อผ่านทางอีเมล
     <a class="underline text-[#f3e3a1] font-bold" href="mailto:tadika5vlayah@gmail.com">tadika5vlayah@gmail.com</a>
   </div>
@@ -110,7 +112,16 @@ let D = { ads: [], banners: [], menus: [] }, TOKEN = sessionStorage.getItem('tk'
 const $ = id => document.getElementById(id);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const imgUrl = id => 'https://lh3.googleusercontent.com/d/' + id;
-const toUrl = l => /^https?:/i.test(l) ? l : BASE + l;
+const SELF = location.href.split('?')[0].split('#')[0];
+const toUrl = l => /^https?:/i.test(l) ? l : SELF + '?app=' + encodeURIComponent(l);
+const APP = new URLSearchParams(location.search).get('app');
+if (APP) { // เปิดระบบที่อัปโหลดไว้ใน Drive ทันที
+  document.body.innerHTML = '<div style="font-family:Sarabun,sans-serif;padding:4rem;text-align:center;color:#0f5132"><i class="fa-solid fa-spinner fa-spin"></i> กำลังเปิดระบบ...</div>';
+  fetch(GAS_URL + '?app=' + encodeURIComponent(APP)).then(r => r.json()).then(j => {
+    if (!j.ok) throw new Error(j.error);
+    document.open(); document.write(j.html); document.close();
+  }).catch(e => { document.body.innerHTML = '<div style="padding:3rem;text-align:center">เปิดระบบไม่สำเร็จ: ' + e.message + '</div>'; });
+}
 const toast = (t, i = 'success') => Swal.fire({ icon: i, title: t, timer: 1800, showConfirmButton: false });
 async function api(action, data = {}) {
   const r = await fetch(GAS_URL, { method: 'POST', body: JSON.stringify({ action, token: TOKEN, ...data }) });
@@ -243,10 +254,10 @@ function adminMenu() {
         <input id="icQ" class="inp my-2" placeholder="ค้นหาไอคอน เช่น mosque, book" oninput="drawIcons()">
         <div id="icGrid" class="grid grid-cols-6 sm:grid-cols-10 gap-1 max-h-40 overflow-y-auto border-2 border-[#e0d3a0] rounded-lg p-1"></div></div>
       <div><label class="text-sm font-bold">ไฟล์ระบบ (.html) <span class="font-normal text-gray-500">เลือกเมื่อเพิ่มใหม่/อัปเดตเวอร์ชัน</span></label><input id="m_file" type="file" accept=".html" class="inp" onchange="if(this.files[0])$('m_link').value=this.files[0].name"></div>
-      <div><label class="text-sm font-bold">ชื่อไฟล์/ลิงก์ปลายทาง</label><input id="m_link" class="inp" placeholder="เช่น TDKFood.html"></div>
+      <div><label class="text-sm font-bold">ชื่อไฟล์ในระบบ หรือวางลิงก์ภายนอก</label><input id="m_link" class="inp" placeholder="TDKFood.html หรือ https://..."></div>
     </div>
     <div class="mt-3 flex gap-2"><button class="btn" onclick="saveMenu()"><i class="fa-solid fa-floppy-disk"></i> บันทึก</button><button class="btn gold hidden" id="mCancel" onclick="resetMenu()">ยกเลิกแก้ไข</button></div>
-    <p class="text-xs text-gray-500 mt-2">ไฟล์ .html จะถูกเก็บในโฟลเดอร์ Drive ของระบบ และลิงก์จะเป็น ${BASE}ชื่อไฟล์ (อย่าลืมนำไฟล์ขึ้น GitHub Pages ด้วย)</p></div>
+    <p class="text-xs text-gray-500 mt-2">อัปโหลดไฟล์ .html แล้วระบบจะเปิดจาก Drive ให้ทันที ไม่ต้องนำขึ้น GitHub หรือจะวางลิงก์ภายนอก (ขึ้นต้น https://) แทนก็ได้ การอัปเดตเวอร์ชันให้เลือกไฟล์ชื่อเดิมซ้ำ</p></div>
   <div class="space-y-2">${D.menus.map((m, i) => `<div class="card p-3 flex items-center gap-3">
     <div class="w-10 h-10 rounded-full bg-[var(--g)] text-[var(--gold)] flex items-center justify-center"><i class="${esc(m.icon)}"></i></div>
     <div class="flex-1 min-w-0"><div class="font-bold truncate">${esc(m.name)} <span class="text-xs text-gray-500">${m.version ? 'v' + esc(m.version) : ''}</span></div><div class="text-xs text-gray-500 truncate">${esc(m.link)} · ${m.clicks} คลิก</div></div>
@@ -317,7 +328,7 @@ async function delImg(kind, row) {
   try { await api('deleteImage', { kind, row }); await load(); renderAdmin(); toast('ลบแล้ว'); } catch (e) { authErr(e); }
 }
 
-load().then(showAds);
+if (!APP) load().then(showAds);
 </script>
 </body>
 </html>
